@@ -97,10 +97,10 @@ app.post('/verifyEmail', (req, res) => {
 
 app.get('/createuser', (req, res) => {
     getAuth().createUser({
-        email: 'kevin@kevin.com',
+        email: 'clynic6@gmail.com',
         emailVerified: false,
         password: '123456',
-        displayName: 'Kevin',
+        displayName: 'Kevin Briones',
         disabled: false
     }).then((userRecord) => {
         // See the UserRecord reference doc for the contents of userRecord.
@@ -159,6 +159,27 @@ app.post('/chefreport', (req, res) => {
         }).catch((error) => {
 
         })
+})
+
+app.post('/qrscanned', (req, res) => {
+    let uid = req.body.qr;
+    let today = new Date();
+    sdate = today.setHours(0, 0, 0, 0);
+
+    getAuth().getUser(uid).then((userRecord) => {
+        let dateFilter = meals.filter(meal => meal.date.toDate().toDateString() === new Date().toDateString());
+        let userFilter = dateFilter.filter(meal => meal.user === uid);
+        if (userFilter[0] && !userFilter[0].used) {
+            const mealsRef = db.collection('meals').doc(userFilter[0].id);
+            mealsRef.update({ used: true })
+        } 
+        res.json({
+            name: userRecord.displayName,
+            meal: userFilter[0]
+        })
+    }).catch((error) => {
+        res.send(error.message)
+    });
 })
 
 app.listen(5000, () => {
