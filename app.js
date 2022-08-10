@@ -16,11 +16,16 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 const cors = require('cors');
+const { send } = require('process');
 app.use(cors({
     origin: '*',
 }));
 
 var meals = [];
+var users = [];
+var admins = [];
+var prices = [];
+var companies = [];
 
 const period = () => {
     var today = new Date();
@@ -39,7 +44,92 @@ const period = () => {
     return period;
 }
 
+
+// List batch of users, 1000 at a time.
+// getAuth()
+//     .listUsers(1000)
+//     .then((listUsersResult) => {
+//         listUsersResult.users.forEach((userRecord) => {
+//             getAuth()
+//                 .deleteUser(userRecord.uid)
+//                 .then(() => {
+//                     console.log('Successfully deleted user');
+//                 })
+//                 .catch((error) => {
+//                     console.log('Error deleting user:', error);
+//                 });
+//         });
+//     })
+//     .catch((error) => {
+//         console.log('Error listing users:', error);
+//     });
+
 listenForMeals();
+listenForUsers();
+// listenforPrice();
+listenForAdmins();
+listenForCompanies();
+
+function listenForCompanies() {
+    const query = db.collection('companies');
+    const observer = query.onSnapshot(querySnapshot => {
+        querySnapshot.docChanges().forEach(change => {
+            if (change.type === 'added') {
+                companies.push(change.doc.data());
+                console.log(change.doc.data())
+            }
+            if (change.type === 'removed') {
+                const index = meals.findIndex(x => x.name === change.doc.name);
+                companies.splice(index, 1);
+                console.log(change.doc.data())
+            }
+        })
+    })
+}
+
+function listenForAdmins() {
+    const query = db.collection('admins');
+    const observer = query.onSnapshot(querySnapshot => {
+        querySnapshot.docChanges().forEach(change => {
+            if (change.type === 'added') {
+                admins.push(change.doc.data());
+                console.log(change.doc.data())
+            }
+            if (change.type === 'modified') {
+                const index = admins.findIndex(x => x.id === change.doc.id);
+                admins.splice(index, 1, change.doc.data());
+                console.log(change.doc.data())
+            }
+            if (change.type === 'removed') {
+                const index = admins.findIndex(x => x.id === change.doc.id);
+                admins.splice(index, 1);
+                console.log(change.doc.data())
+            }
+        })
+    })
+}
+
+function listenForUsers() {
+    const query = db.collection('colaboradores').orderBy('lastname');
+    const observer = query.onSnapshot(querySnapshot => {
+        querySnapshot.docChanges().forEach(change => {
+            if (change.type === 'added') {
+                users.push(change.doc.data());
+                console.log(change.doc.data())
+            }
+            if (change.type === 'modified') {
+                const index = users.findIndex(x => x.id === change.doc.id);
+                users.splice(index, 1, change.doc.data());
+                console.log(change.doc.data())
+            }
+            if (change.type === 'removed') {
+                const index = users.findIndex(x => x.id === change.doc.id);
+                users.splice(index, 1);
+                console.log(change.doc.data())
+            }
+        })
+    })
+}
 
 function listenForMeals() {
     const query = db.collection('meals').where('date', '>=', new Date(period().start)).where('date', '<=', new Date(period().end));
@@ -60,10 +150,58 @@ function listenForMeals() {
                 console.log(change.doc.data())
             }
         })
-
     })
-
 }
+
+app.get('/api/bulkcreateusers', (req, res) => {
+    const fs = require("fs");
+    const readline = require("readline");
+    const stream = fs.createReadStream("FILE.csv");
+    const rl = readline.createInterface({ input: stream });
+    let data = [];
+    let users = [];
+    rl.on("line", (row) => {
+        data.push(row.split(","));
+    });
+    rl.on("close", () => {
+        data.forEach(row => {
+            users.push({
+                id: row[0],
+                name: row[1],
+                lastname: row[2],
+                email: row[3],
+                company: row[4],
+                active: true
+            })
+        })
+        users.shift();
+        users.forEach(user => {
+            db.collection('colaboradores').doc(user.id).set(user).then(() => {
+                console.log('Document successfully written!');
+            }
+            ).catch(error => {
+                console.log('Error writing document: ', error);
+            })
+            // getAuth().createUser({
+            //     email: user.email,
+            //     emailVerified: false,
+            //     password: '123456',
+            //     displayName: user.name + " " + user.lastname.split(" ")[0],
+            //     disabled: false
+            // }).then((userRecord) => {
+            //     console.log("Successfully created new user:", userRecord.uid);
+            //     db.collection('colaboradores').doc(user.id).set(user).then(() => {
+            //         console.log('Document successfully written!');
+            //     }
+            //     ).catch(error => {
+            //         console.log('Error writing document: ', error);
+            //     })
+            // }).catch(error => {
+            //     console.log(user.email, error)
+            // })
+        })
+    });
+})
 
 app.post('/meals', (req, res) => {
     getAuth()
@@ -97,11 +235,11 @@ app.post('/verifyEmail', (req, res) => {
 
 app.get('/createuser', (req, res) => {
     getAuth().createUser({
-        email: 'clynic6@gmail.com',
+        email: 'director@nivekstudio.com',
         emailVerified: false,
         password: '123456',
-        displayName: 'Kevin Briones',
-        disabled: false
+        displayName: 'Oswaldo Briones',
+        disabled: false,
     }).then((userRecord) => {
         // See the UserRecord reference doc for the contents of userRecord.
         console.log('Successfully created new user:', userRecord.uid);
@@ -118,7 +256,6 @@ app.post('/reactivatemeal', (req, res) => {
 });
 
 app.post('/editmeal', (req, res) => {
-    console.log(req.body);
     const mealsRef = db.collection('meals').doc(req.body.id);
     mealsRef.update({ type: req.body.type }).then(() => { res.send('success') }).catch(error => { res.send(error) });
 });
@@ -172,7 +309,7 @@ app.post('/qrscanned', (req, res) => {
         if (userFilter[0] && !userFilter[0].used) {
             const mealsRef = db.collection('meals').doc(userFilter[0].id);
             mealsRef.update({ used: true })
-        } 
+        }
         res.json({
             name: userRecord.displayName,
             meal: userFilter[0]
@@ -180,6 +317,97 @@ app.post('/qrscanned', (req, res) => {
     }).catch((error) => {
         res.send(error.message)
     });
+})
+
+app.post('/colaboradores', (req, res) => {
+    res.send(users);
+})
+
+app.post('/deletecolaborador', (req, res) => {
+    getAuth().verifyIdToken(req.body.token).then((decodedToken) => {
+        let index = admins.findIndex(admin => admin.uid === decodedToken.uid);
+        if (index > -1) {
+            console.log(req.body.id)
+            db.collection('colaboradores').doc(req.body.id).delete().then(() => {
+                res.send('success')
+            }).catch(error => {
+                res.send('Error al eliminar el colaborador')
+            })
+        } else {
+            res.send('No tienes permisos de administrador');
+        }
+    }).catch((error) => {
+        res.send(error)
+    })
+})
+
+app.post('/addcolaborador', (req, res) => {
+    getAuth().verifyIdToken(req.body.token).then((decodedToken) => {
+        let index = admins.findIndex(admin => admin.uid === decodedToken.uid);
+        if (index > -1) {
+            db.collection('colaboradores').doc(req.body.user.id).set(req.body.user);
+            res.send('success');
+        } else {
+            res.send('No tienes permisos de administrador');
+        }
+    }).catch((error) => {
+        res.send(error)
+    })
+})
+
+app.post('/editcolaborador', (req, res) => {
+    getAuth().verifyIdToken(req.body.token).then((decodedToken) => {
+        let index = admins.findIndex(admin => admin.uid === decodedToken.uid);
+        if (index > -1) {
+            db.collection('colaboradores').doc(req.body.id).update({
+                active: req.body.active,
+                company: req.body.company,
+            }).then(() => {
+                res.send('success');
+            }).catch(error => {
+                res.send('Error al editar el colaborador')
+            })
+        } else {
+            res.send('No tienes permisos de administrador');
+        }
+    }).catch((error) => {
+        res.send(error)
+    })
+})
+
+app.post('/addCompany', (req, res) => {
+    getAuth().verifyIdToken(req.body.token).then((decodedToken) => {
+        let index = admins.findIndex(admin => admin.uid === decodedToken.uid);
+        console.log(index);
+        if (index > -1) {
+            const data = {
+                name: req.body.company,
+            }
+            db.collection('companies').doc(req.body.company).set(data);
+            res.send('success');
+        } else {
+            res.send('No tienes permisos de administrador');
+        }
+    }).catch((error) => {
+        res.send(error)
+    })
+})
+
+app.post('/deleteCompany', (req, res) => {
+    getAuth().verifyIdToken(req.body.token).then((decodedToken) => {
+        db.collection('companies').doc(req.body.company).delete();
+        res.send(companies);
+    }).catch((error) => {
+        res.send(error)
+    })
+})
+
+app.post('/companies', (req, res) => {
+    getAuth().verifyIdToken(req.body.token).then((decodedToken) => {
+        res.send(companies);
+    }).catch((error) => {
+        res.send(error)
+    })
 })
 
 app.listen(5000, () => {
