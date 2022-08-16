@@ -28,9 +28,9 @@ let period = () => {
     return period;
 }
 
-listenForCompanies();
-listenForAdmins();
-listenForUsers();
+// listenForCompanies();
+// listenForAdmins();
+// listenForUsers();
 listenForPrices();
 listenForMeals();
 
@@ -96,7 +96,8 @@ function listenForUsers() {
 }
 
 function listenForMeals() {
-    const query = db.collection('meals').where('date', '>=', new Date(period().start)).where('date', '<=', new Date(period().end));
+    // .where('date', '>=', new Date(period().start)).where('date', '<=', new Date(period().end));
+    const query = db.collection('meals').orderBy('date');
     const observer = query.onSnapshot(querySnapshot => {
         querySnapshot.docChanges().forEach(change => {
             if (change.type === 'added') {
@@ -144,3 +145,4 @@ exports.admins = admins;
 exports.users = users;
 exports.meals = meals;
 exports.prices = prices;
+exports.period = period;

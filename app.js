@@ -22,30 +22,6 @@ app.use(cors({
     origin: '*',
 }));
 
-var meals = [];
-var users = [];
-var admins = [];
-var prices = [];
-var companies = [];
-
-const period = () => {
-    var today = new Date();
-    var period = {
-        start: '',
-        end: ''
-    };
-
-    if (today.getDate() <= 20) {
-        period.start = today.getFullYear() + "-" + (today.getMonth()) + "-" + 21 + " 00:00:00";
-        period.end = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + 20 + " 00:00:00";
-    } else {
-        period.start = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + 20 + " 00:00:00";
-        period.end = today.getFullYear() + "-" + (today.getMonth() + 2) + "-" + 21 + " 00:00:00";
-    }
-    return period;
-}
-
-
 // List batch of users, 1000 at a time.
 // getAuth()
 //     .listUsers(1000)
@@ -64,96 +40,6 @@ const period = () => {
 //     .catch((error) => {
 //         console.log('Error listing users:', error);
 //     });
-
-// listenForMeals();
-// listenForUsers();
-// listenforPrice();
-// listenForAdmins();
-// listenForCompanies();
-
-function listenForCompanies() {
-    const query = db.collection('companies');
-    const observer = query.onSnapshot(querySnapshot => {
-        querySnapshot.docChanges().forEach(change => {
-            if (change.type === 'added') {
-                companies.push(change.doc.data());
-                console.log(change.doc.data())
-            }
-            if (change.type === 'removed') {
-                const index = meals.findIndex(x => x.name === change.doc.name);
-                companies.splice(index, 1);
-                console.log(change.doc.data())
-            }
-        })
-    })
-}
-
-function listenForAdmins() {
-    const query = db.collection('admins');
-    const observer = query.onSnapshot(querySnapshot => {
-        querySnapshot.docChanges().forEach(change => {
-            if (change.type === 'added') {
-                admins.push(change.doc.data());
-                console.log(change.doc.data())
-            }
-            if (change.type === 'modified') {
-                const index = admins.findIndex(x => x.id === change.doc.id);
-                admins.splice(index, 1, change.doc.data());
-                console.log(change.doc.data())
-            }
-            if (change.type === 'removed') {
-                const index = admins.findIndex(x => x.id === change.doc.id);
-                admins.splice(index, 1);
-                console.log(change.doc.data())
-            }
-        })
-    })
-}
-
-function listenForUsers() {
-    const query = db.collection('colaboradores').orderBy('lastname');
-    const observer = query.onSnapshot(querySnapshot => {
-        querySnapshot.docChanges().forEach(change => {
-            if (change.type === 'added') {
-                users.push(change.doc.data());
-                console.log(change.doc.data())
-            }
-            if (change.type === 'modified') {
-                const index = users.findIndex(x => x.id === change.doc.id);
-                users.splice(index, 1, change.doc.data());
-                console.log(change.doc.data())
-            }
-            if (change.type === 'removed') {
-                const index = users.findIndex(x => x.id === change.doc.id);
-                users.splice(index, 1);
-                console.log(change.doc.data())
-            }
-        })
-    })
-}
-
-function listenForMeals() {
-    const query = db.collection('meals').where('date', '>=', new Date(period().start)).where('date', '<=', new Date(period().end));
-    const observer = query.onSnapshot(querySnapshot => {
-        querySnapshot.docChanges().forEach(change => {
-            if (change.type === 'added') {
-                meals.push(change.doc.data());
-                console.log(change.doc.data())
-            }
-            if (change.type === 'modified') {
-                const index = meals.findIndex(x => x.id === change.doc.id);
-                meals.splice(index, 1, change.doc.data());
-                console.log(change.doc.data())
-            }
-            if (change.type === 'removed') {
-                const index = meals.findIndex(x => x.id === change.doc.id);
-                meals.splice(index, 1);
-                console.log(change.doc.data())
-            }
-        })
-    })
-}
-
 app.get('/api/bulkcreateusers', (req, res) => {
     const fs = require("fs");
     const readline = require("readline");
@@ -209,10 +95,16 @@ app.post('/meals', (req, res) => {
         .verifyIdToken(req.body.token)
         .then((decodedToken) => {
             const uid = decodedToken.uid;
-            res.send(meals.filter(meal => meal.user === uid));
+            res.send({
+                meals: meals.filter(meal => meal.user === uid),
+                status: 'success'
+            });
         })
         .catch((error) => {
-            res.error(error);
+            res.send({
+                error: error,
+                status: 'error'
+            })
         });
 })
 
@@ -248,22 +140,6 @@ app.get('/createuser', (req, res) => {
         .catch((error) => {
             console.log('Error creating new user:', error);
         });
-})
-
-app.post('/reactivatemeal', (req, res) => {
-    console.log(req.body.id);
-    const mealsRef = db.collection('meals').doc(req.body.id);
-    mealsRef.update({ cancelled: false }).then(() => { res.send('success') }).catch(error => { res.send(error) });
-});
-
-app.post('/editmeal', (req, res) => {
-    const mealsRef = db.collection('meals').doc(req.body.id);
-    mealsRef.update({ type: req.body.type }).then(() => { res.send('success') }).catch(error => { res.send(error) });
-});
-
-app.post('/cancelmeal', (req, res) => {
-    const mealRef = db.collection('meals').doc(req.body.id);
-    mealRef.update({ cancelled: true }).then(() => { res.send('success') }).catch(error => { res.send(error) });
 })
 
 app.post('/userreport', (req, res) => {
@@ -337,6 +213,7 @@ app.post('/addcolaborador', (req, res) => {
 
 
 require('./admin-routes.js')(app);
+require('./users-routes')(app);
 
 
 var getUsers = () => {
@@ -344,6 +221,6 @@ var getUsers = () => {
 }
 exports.getUsers = getUsers;
 
-app.listen(5000, () => {
-    console.log("Listening on 5000");
+app.listen(4001, () => {
+    console.log("Listening on 4001");
 })

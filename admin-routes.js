@@ -104,7 +104,7 @@ module.exports = function (app) {
         admin = JSON.parse(req.body.admin);
         console.log(admin);
         getAuth().createUser({
-            uid: val.toString(),
+            uid: '23646-' + val.toString(),
             email: admin.email,
             password: '123456',
             displayName: admin.name + ' ' + admin.lastname,
@@ -118,7 +118,7 @@ module.exports = function (app) {
                 email: admin.email,
                 type: admin.type,
                 active: admin.active,
-                uid: val
+                uid: '23646-' + val.toString(),
             }
             console.log(data);
             db.collection('admins').doc(val.toString()).set(data).then(() => {
@@ -151,10 +151,12 @@ module.exports = function (app) {
     router.post('/deletecolaborador', (req, res) => {
         db.collection('colaboradores').doc(req.body.id).delete().then(() => {
             getAuth().deleteUser(req.body.id).then(() => {
-                let mealstodelete = meals.filter(meal => meal.user === req.body.id);
-                mealstodelete.forEach(meal => {
-                    db.collection('meals').doc(meal.id).delete();   
-                })
+                let mealstodelete = meals.filter(meal=> meal.date > new Date());
+                mealstodelete = meals.filter(meal => meal.user === req.body.id);
+                console.log(mealstodelete);
+                // mealstodelete.forEach(meal => {
+                //     db.collection('meals').doc(meal.id).delete();   
+                // })
                 res.send('success')
             }).catch((error) => {
                 res.send('Error al eliminar el colaborador');
@@ -202,7 +204,7 @@ module.exports = function (app) {
                 // create user db error
                 res.send({
                     status: 'error',
-                    data: error
+                    data: 'El correo electronico ya existe'
                 });
             })
         }).catch((error) => {
