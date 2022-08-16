@@ -12,6 +12,7 @@ const db = getFirestore();
 
 var bodyParser = require('body-parser')
 const app = express();
+var router = express.Router();
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
@@ -64,11 +65,11 @@ const period = () => {
 //         console.log('Error listing users:', error);
 //     });
 
-listenForMeals();
-listenForUsers();
+// listenForMeals();
+// listenForUsers();
 // listenforPrice();
-listenForAdmins();
-listenForCompanies();
+// listenForAdmins();
+// listenForCompanies();
 
 function listenForCompanies() {
     const query = db.collection('companies');
@@ -235,10 +236,10 @@ app.post('/verifyEmail', (req, res) => {
 
 app.get('/createuser', (req, res) => {
     getAuth().createUser({
-        email: 'director@nivekstudio.com',
+        email: 'clynic_2006@hotmail.com',
         emailVerified: false,
         password: '123456',
-        displayName: 'Oswaldo Briones',
+        displayName: 'Mateo Moran',
         disabled: false,
     }).then((userRecord) => {
         // See the UserRecord reference doc for the contents of userRecord.
@@ -319,28 +320,6 @@ app.post('/qrscanned', (req, res) => {
     });
 })
 
-app.post('/colaboradores', (req, res) => {
-    res.send(users);
-})
-
-app.post('/deletecolaborador', (req, res) => {
-    getAuth().verifyIdToken(req.body.token).then((decodedToken) => {
-        let index = admins.findIndex(admin => admin.uid === decodedToken.uid);
-        if (index > -1) {
-            console.log(req.body.id)
-            db.collection('colaboradores').doc(req.body.id).delete().then(() => {
-                res.send('success')
-            }).catch(error => {
-                res.send('Error al eliminar el colaborador')
-            })
-        } else {
-            res.send('No tienes permisos de administrador');
-        }
-    }).catch((error) => {
-        res.send(error)
-    })
-})
-
 app.post('/addcolaborador', (req, res) => {
     getAuth().verifyIdToken(req.body.token).then((decodedToken) => {
         let index = admins.findIndex(admin => admin.uid === decodedToken.uid);
@@ -355,60 +334,15 @@ app.post('/addcolaborador', (req, res) => {
     })
 })
 
-app.post('/editcolaborador', (req, res) => {
-    getAuth().verifyIdToken(req.body.token).then((decodedToken) => {
-        let index = admins.findIndex(admin => admin.uid === decodedToken.uid);
-        if (index > -1) {
-            db.collection('colaboradores').doc(req.body.id).update({
-                active: req.body.active,
-                company: req.body.company,
-            }).then(() => {
-                res.send('success');
-            }).catch(error => {
-                res.send('Error al editar el colaborador')
-            })
-        } else {
-            res.send('No tienes permisos de administrador');
-        }
-    }).catch((error) => {
-        res.send(error)
-    })
-})
 
-app.post('/addCompany', (req, res) => {
-    getAuth().verifyIdToken(req.body.token).then((decodedToken) => {
-        let index = admins.findIndex(admin => admin.uid === decodedToken.uid);
-        console.log(index);
-        if (index > -1) {
-            const data = {
-                name: req.body.company,
-            }
-            db.collection('companies').doc(req.body.company).set(data);
-            res.send('success');
-        } else {
-            res.send('No tienes permisos de administrador');
-        }
-    }).catch((error) => {
-        res.send(error)
-    })
-})
 
-app.post('/deleteCompany', (req, res) => {
-    getAuth().verifyIdToken(req.body.token).then((decodedToken) => {
-        db.collection('companies').doc(req.body.company).delete();
-        res.send(companies);
-    }).catch((error) => {
-        res.send(error)
-    })
-})
+require('./admin-routes.js')(app);
 
-app.post('/companies', (req, res) => {
-    getAuth().verifyIdToken(req.body.token).then((decodedToken) => {
-        res.send(companies);
-    }).catch((error) => {
-        res.send(error)
-    })
-})
+
+var getUsers = () => {
+    return users;
+}
+exports.getUsers = getUsers;
 
 app.listen(5000, () => {
     console.log("Listening on 5000");
