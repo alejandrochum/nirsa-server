@@ -41,6 +41,15 @@ module.exports = function (app) {
         })
     });
 
+    router.post('/info', (req, res) => {
+        let uid = res.locals.uid;
+        users.forEach(user => {
+            if (user.id === uid) {
+                res.send(user);
+            }
+        })
+    })
+
     // PRICES
 
     router.post('/prices', (req, res) => {

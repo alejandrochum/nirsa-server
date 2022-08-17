@@ -151,13 +151,16 @@ module.exports = function (app) {
     router.post('/deletecolaborador', (req, res) => {
         db.collection('colaboradores').doc(req.body.id).delete().then(() => {
             getAuth().deleteUser(req.body.id).then(() => {
-                let mealstodelete = meals.filter(meal=> meal.date > new Date());
-                mealstodelete = meals.filter(meal => meal.user === req.body.id);
-                console.log(mealstodelete);
-                // mealstodelete.forEach(meal => {
-                //     db.collection('meals').doc(meal.id).delete();   
-                // })
-                res.send('success')
+                let mealstodelete = meals.filter(meal => meal.user === req.body.id);
+                mealstodelete.forEach(meal => {
+                    let today = new Date().getTime();
+                    let mealDate = new Date(meal.date._seconds * 1000).getTime();
+                    if(mealDate > today){
+                        db.collection('meals').doc(meal.id).delete();
+                        console.log('deleted meal', new Date(meal.date._seconds * 1000).toLocaleDateString());
+                    }
+                })
+                res.send('success');
             }).catch((error) => {
                 res.send('Error al eliminar el colaborador');
             })
@@ -236,6 +239,22 @@ module.exports = function (app) {
             res.send({
                 status: 'success',
                 data: prices
+            });
+        }).catch(error => {
+            res.send({
+                status: 'error',
+                error: error
+            })
+        })
+    })
+
+    // SOLICITUDES
+
+    router.post('/createrequest', (req, res) => {
+        let data = JSON.parse(req.body.data);
+        db.collection('requests').add(data).then(() => {
+            res.send({
+                status: 'success'
             });
         }).catch(error => {
             res.send({

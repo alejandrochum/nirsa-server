@@ -22,6 +22,8 @@ app.use(cors({
     origin: '*',
 }));
 
+let meals = listeners.meals;
+
 // List batch of users, 1000 at a time.
 // getAuth()
 //     .listUsers(1000)
@@ -45,7 +47,6 @@ app.get('/api/bulkcreateusers', (req, res) => {
     const readline = require("readline");
     const stream = fs.createReadStream("FILE.csv");
     const rl = readline.createInterface({ input: stream });
-    let data = [];
     let users = [];
     rl.on("line", (row) => {
         data.push(row.split(","));
@@ -126,22 +127,6 @@ app.post('/verifyEmail', (req, res) => {
         });
 })
 
-app.get('/createuser', (req, res) => {
-    getAuth().createUser({
-        email: 'clynic_2006@hotmail.com',
-        emailVerified: false,
-        password: '123456',
-        displayName: 'Mateo Moran',
-        disabled: false,
-    }).then((userRecord) => {
-        // See the UserRecord reference doc for the contents of userRecord.
-        console.log('Successfully created new user:', userRecord.uid);
-    })
-        .catch((error) => {
-            console.log('Error creating new user:', error);
-        });
-})
-
 app.post('/userreport', (req, res) => {
     getAuth()
         .verifyIdToken(req.body.token)
@@ -195,21 +180,6 @@ app.post('/qrscanned', (req, res) => {
         res.send(error.message)
     });
 })
-
-app.post('/addcolaborador', (req, res) => {
-    getAuth().verifyIdToken(req.body.token).then((decodedToken) => {
-        let index = admins.findIndex(admin => admin.uid === decodedToken.uid);
-        if (index > -1) {
-            db.collection('colaboradores').doc(req.body.user.id).set(req.body.user);
-            res.send('success');
-        } else {
-            res.send('No tienes permisos de administrador');
-        }
-    }).catch((error) => {
-        res.send(error)
-    })
-})
-
 
 
 require('./admin-routes.js')(app);

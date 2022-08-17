@@ -28,9 +28,9 @@ let period = () => {
     return period;
 }
 
-// listenForCompanies();
-// listenForAdmins();
-// listenForUsers();
+listenForCompanies();
+listenForAdmins();
+listenForUsers();
 listenForPrices();
 listenForMeals();
 
@@ -145,4 +145,3 @@ exports.admins = admins;
 exports.users = users;
 exports.meals = meals;
 exports.prices = prices;
-exports.period = period;
