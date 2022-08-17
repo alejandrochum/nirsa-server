@@ -22,6 +22,7 @@ app.use(cors({
     origin: '*',
 }));
 
+const listeners = require('./listeners.js');
 let meals = listeners.meals;
 
 // List batch of users, 1000 at a time.
