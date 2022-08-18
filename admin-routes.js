@@ -14,6 +14,7 @@ module.exports = function (app) {
     let users = listeners.users;
     let prices = listeners.prices;
     let meals = listeners.meals;
+    let requests = listeners.requests;
 
     // Validate Admin
     app.use('/admin', router);
@@ -150,16 +151,16 @@ module.exports = function (app) {
 
     router.post('/deletecolaborador', (req, res) => {
         db.collection('colaboradores').doc(req.body.id).delete().then(() => {
+            let mealstodelete = meals.filter(meal => meal.user === req.body.id);
+            mealstodelete.forEach(meal => {
+                let today = new Date().getTime();
+                let mealDate = new Date(meal.date._seconds * 1000).getTime();
+                if (mealDate > today) {
+                    db.collection('meals').doc(meal.id).delete();
+                    console.log('deleted meal', new Date(meal.date._seconds * 1000).toLocaleDateString());
+                }
+            })
             getAuth().deleteUser(req.body.id).then(() => {
-                let mealstodelete = meals.filter(meal => meal.user === req.body.id);
-                mealstodelete.forEach(meal => {
-                    let today = new Date().getTime();
-                    let mealDate = new Date(meal.date._seconds * 1000).getTime();
-                    if(mealDate > today){
-                        db.collection('meals').doc(meal.id).delete();
-                        console.log('deleted meal', new Date(meal.date._seconds * 1000).toLocaleDateString());
-                    }
-                })
                 res.send('success');
             }).catch((error) => {
                 res.send('Error al eliminar el colaborador');
@@ -249,13 +250,41 @@ module.exports = function (app) {
     })
 
     // SOLICITUDES
+    router.post('/requests', (req, res) => {
+        console.log(requests);
+        res.send({
+            status: 'success',
+            data: requests
+        })
+    })
+
+    router.post('/approverequest', (req, res) => {
+        let data = JSON.parse(req.body.data);
+        db.collection('requests').doc(data.id).update({
+            approved: data.approved,
+            pending: false,
+        })
+        res.send({
+            status: 'success',
+            data: requests
+        })
+    })
 
     router.post('/createrequest', (req, res) => {
         let data = JSON.parse(req.body.data);
-        db.collection('requests').add(data).then(() => {
-            res.send({
-                status: 'success'
-            });
+        db.collection('requests').add(data).then(docRef => {
+            db.collection('requests').doc(docRef.id).update({
+                id: docRef.id
+            }).then(() => {
+                res.send({
+                    status: 'success'
+                });
+            }).catch(error => {
+                res.send({
+                    status: 'error',
+                    error: error
+                })
+            })
         }).catch(error => {
             res.send({
                 status: 'error',
