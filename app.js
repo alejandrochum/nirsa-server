@@ -12,7 +12,6 @@ const db = getFirestore();
 
 var bodyParser = require('body-parser')
 const app = express();
-var router = express.Router();
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 

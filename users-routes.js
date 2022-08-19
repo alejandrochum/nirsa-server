@@ -12,6 +12,7 @@ module.exports = function (app) {
     let users = listeners.users;
     let prices = listeners.prices;
     let meals = listeners.meals;
+    let requests = listeners.requests;
 
     let period = () => {
         var today = new Date();
@@ -98,6 +99,27 @@ module.exports = function (app) {
     router.post('/cancelmeal', (req, res) => {
         const mealRef = db.collection('meals').doc(req.body.id);
         mealRef.update({ cancelled: true }).then(() => { res.send('success') }).catch(error => { res.send(error) });
+    })
+
+    // SOLICITUDES
+    router.post('/requests', (req, res) => {
+        let uid = res.locals.uid;
+        let data = [];
+        requests.forEach(request => {
+            mealDate = new Date(request.date);
+            startDate = new Date(period().start);
+            endDate = new Date(period().end);
+            if (mealDate >= startDate && mealDate <= endDate && request.user === uid && request.approved) {
+                data.push(request);
+            }
+        })
+
+        console.log(data);
+
+        res.send({
+            status: 'success',
+            data: data
+        })
     })
 
 }

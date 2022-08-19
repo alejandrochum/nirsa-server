@@ -11,6 +11,7 @@ var admins = [];
 var prices = [];
 var companies = [];
 var requests = [];
+var holidays = [];
 
 let period = () => {
     var today = new Date();
@@ -35,6 +36,29 @@ listenForUsers();
 listenForPrices();
 listenForMeals();
 listenForRequests();
+listenForHolidays();
+
+function listenForHolidays() {
+    const query = db.collection('holidays');
+    const observer = query.onSnapshot(querySnapshot => {
+        querySnapshot.docChanges().forEach(change => {
+            if (change.type === 'added') {
+                holidays.push(change.doc.data());
+                console.log(change.doc.data())
+            }
+            if (change.type === 'modified') {
+                const index = holidays.findIndex(x => x.date === change.doc.data().date);
+                holidays.splice(index, 1, change.doc.data());
+                console.log(change.doc.data())
+            }
+            if (change.type === 'removed') {
+                const index = holidays.findIndex(x => x.date === change.doc.data().date);
+                holidays.splice(index, 1);
+                console.log('removed: ', change.doc.data(), 'index', index)
+            }
+        })
+    })
+}
 
 function listenForCompanies() {
     const query = db.collection('companies');
@@ -170,3 +194,4 @@ exports.users = users;
 exports.meals = meals;
 exports.prices = prices;
 exports.requests = requests;
+exports.holidays = holidays;
