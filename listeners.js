@@ -91,9 +91,9 @@ function listenForAdmins() {
                 console.log(change.doc.data())
             }
             if (change.type === 'removed') {
-                const index = admins.findIndex(x => x.id === change.doc.id);
+                const index = admins.findIndex(x => x.uid === change.doc.id.toString());
                 admins.splice(index, 1);
-                console.log(change.doc.data())
+                console.log('deleted:', change.doc.data())
             }
         })
     })
