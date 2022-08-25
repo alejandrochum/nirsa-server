@@ -61,7 +61,6 @@ module.exports = function (app) {
     })
 
     // MEALS
-
     router.post('/meals', (req, res) => {
         let filtered = [];
         if (meals.length > 0) {
@@ -69,6 +68,8 @@ module.exports = function (app) {
                 mealDate = new Date(meal.date._seconds * 1000);
                 startDate = new Date(period().start);
                 endDate = new Date(period().end);
+                endDate = endDate.getFullYear() + "-" + (endDate.getMonth() + 2) + "-" + 21 + " 00:00:00";
+
                 if (mealDate >= startDate && mealDate <= endDate && meal.user === res.locals.uid) {
                     filtered.push(meal);
                 }

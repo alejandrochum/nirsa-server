@@ -69,7 +69,7 @@ function listenForCompanies() {
                 console.log(change.doc.data())
             }
             if (change.type === 'removed') {
-                const index = companies.findIndex(x => x.name === change.doc.name);
+                const index = companies.findIndex(x => x.name === change.doc.data().name);
                 companies.splice(index, 1);
                 console.log(change.doc.data())
             }
