@@ -11,15 +11,10 @@ module.exports = function (app) {
     const listeners = require('./listeners.js');
 
     var transporter = nodemailer.createTransport({
-        // service: 'gmail',
-        // auth: {
-        //     user: 'alejandro.chum@gmail.com',
-        //     pass: 'gcnhthiylzpaqeyk'
-        // }
         service: 'outlook',
         auth: {
-            user: 'delinirsa@outlook.com',
-            pass: 'Nivek2022**'
+            user: 'info@delinirsa.com',
+            pass: 'NivekDeli2022**'
         }
     });
 
@@ -159,7 +154,7 @@ module.exports = function (app) {
                 });
                 var type = admin.type === 'NIRSA' ? 'Administrador' : 'Usuario Catering';
                 var mailOptions = {
-                    from: 'Deli Nirsa <delinirsa@outlook.com>',
+                    from: 'Deli Nirsa <info@delinirsa.com',
                     to: data.email,
                     subject: 'Nuevo ' + type + ' Deli Nirsa',
                     html: `
@@ -206,7 +201,7 @@ module.exports = function (app) {
                                                                 <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%">
                                                                     <tr>
                                                                         <td align="left">
-                                                                            <a href="#"><img src="https://www.nvkecgroup.com/PRUEBAS/nirsa/mails/img/header01.png" width="100%" height="auto" border="0" style="display: block;"></a>
+                                                                            <a href="#"><img src="https://admin.delinirsa.com/mails/img/header01.png" width="100%" height="auto" border="0" style="display: block;"></a>
                                                                         </td>
                     
                                                                         
@@ -222,19 +217,7 @@ module.exports = function (app) {
                     
                                                     
                                                     
-                                                    <!-- / Divider -->
-                                                    <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding-top: 25px;" align="center">
-                                                        <tr>
-                                                            <td align="center">
-                                                                <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" align="center" style="border-bottom: solid 1px #eeeeee; width: 620px;">
-                                                                    <tr>
-                                                                        <td align="center">&nbsp;</td>
-                                                                    </tr>
-                                                                </table>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                    <!-- /// Divider -->
+                                                    
                     
                                                     <!-- / Title -->
                                                     <table class="container title-block" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -242,7 +225,7 @@ module.exports = function (app) {
                                                             <td align="center" valign="top">
                                                                 <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
                                                                     <tr>
-                                                                        <td style="padding: 35px 0 15px 0; font-size: 26px;" align="center">!Bienvenido `+ data.name + `!</td>
+                                                                        <td style="padding: 35px 0 15px 0; font-size: 26px;" align="center">¡Bienvenido/a `+ admin.name + `!</td>
                                                                     </tr>
                                                                     
                                                                     
@@ -252,7 +235,16 @@ module.exports = function (app) {
                                                         </tr>
                                                     </table>
                                                     <!-- /// Title -->
+                                                    
                                                 
+                    
+                                                    
+                    
+                                                    
+                    
+                                                
+                                                    
+                    
                                                     <!-- / CTA Block -->
                                                     <table class="container cta-block" border="0" cellpadding="0" cellspacing="0" width="100%">
                                                         <tr>
@@ -265,23 +257,34 @@ module.exports = function (app) {
                                                                     
                     
                                                                     <tr>
-                                                                        <td class="cta-block__content" style="padding: 20px 0 27px 0; font-size: 16px; line-height: 27px; color: #969696; text-align: center;">
+                                                                        <td class="cta-block__content" style="padding: 20px 0 0px 0; font-size: 16px; line-height: 27px; color: #969696; text-align: center;">
                                                                             
                     Utiliza el siguiente usuario y contraseña<br>
                     para ingresar a la plataforma:<br><br>
                                                                             
-                                                                            <div style="color:#286E9E">Usuario:</div> <div style="color:#459973"><strong>`+ data.email + `</strong></div><br>
+                                                                            <div style="color:#286E9E; font-size: 26px;">Usuario: </div> <div style="color:#459973"><strong> `+ admin.email + `</strong></div><br>
                     
                     
-                                                                        <div style="color:#286E9E">Contasena: </div> <div style="color:#459973"><strong>`+ password + `</strong></div><br>	
+                                                                        <div style="color:#286E9E; font-size: 26px;">Contasena: </div> <div style="color:#459973"><strong> `+ password + `</strong></div><br>	
+                                                                        
+                                                                        </td>
+                                                                    </tr>
+                                                                    
+                                                                    
+                                                                    <tr>
+                                                                        <td class="cta-block__content" style="padding: 0px 0 27px 0; font-size: 16px; line-height: 27px; color: #969696; text-align: center;">
+                                                                            
+                    Click en el botón de abajo para ingresar:
+                                                                        
                                                                         
                                                                         </td>
                                                                     </tr>
                                                                   
+                                                                  
                                                                     <tr>
                                                                         <td class="cta-block__content" style="padding: 0px 0 50px 0; font-size: 22px; line-height: 17px; text-align: center;">
                                                                         
-                                                                        <span style="color: #2855E5; "><a href="#"><div class="boton-pro" style="padding: 3%; border-radius: 100px; color: #55A985; background-color: #fff; width: 46%; margin-left: 25%;">www.delinirsa.com</div></a> </span><br>
+                                                                        <span style="color: #000;"><a href="https://delinirsa.com" style="text-decoration: none;"><div class="boton-pro" style="padding: 3%; border-radius: 100px; color: #fff; background-color: #55A581;  width: 46%; margin-left: 25%; text-decoration: none;">Ingresar</div></a> </span><br>
                                                                         
                                                                         </td>
                                                                     </tr>
@@ -293,6 +296,19 @@ module.exports = function (app) {
                                                         </tr>
                                                     </table>
                                                     <!-- /// CTA Block -->
+                    
+                                                    
+                                                    
+                                                
+                                                    
+                                                    
+                                                    
+                                                
+                                                    
+                                                
+                                                    
+                                                
+                    
                                                     <!-- / Footer
                                                     <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%" align="center" style="background-color: #001a33;">
                                                         <tr>
@@ -406,7 +422,7 @@ module.exports = function (app) {
         }).then((userRecord) => {
             db.collection('colaboradores').doc(data.id).set(data).then(() => {
                 var mailOptions = {
-                    from: 'Deli Nirsa <delinirsa@outlook.com>',
+                    from: 'Deli Nirsa <info@delinirsa.com>',
                     to: data.email,
                     subject: 'Nuevo Usuario Deli Nirsa',
                     html: `
@@ -453,7 +469,7 @@ module.exports = function (app) {
                                                                 <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%">
                                                                     <tr>
                                                                         <td align="left">
-                                                                            <a href="#"><img src="https://www.nvkecgroup.com/PRUEBAS/nirsa/mails/img/header01.png" width="100%" height="auto" border="0" style="display: block;"></a>
+                                                                            <a href="#"><img src="https://admin.delinirsa.com/mails/img/header01.png" width="100%" height="auto" border="0" style="display: block;"></a>
                                                                         </td>
                     
                                                                         
@@ -469,19 +485,7 @@ module.exports = function (app) {
                     
                                                     
                                                     
-                                                    <!-- / Divider -->
-                                                    <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding-top: 25px;" align="center">
-                                                        <tr>
-                                                            <td align="center">
-                                                                <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" align="center" style="border-bottom: solid 1px #eeeeee; width: 620px;">
-                                                                    <tr>
-                                                                        <td align="center">&nbsp;</td>
-                                                                    </tr>
-                                                                </table>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                    <!-- /// Divider -->
+                                                    
                     
                                                     <!-- / Title -->
                                                     <table class="container title-block" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -489,7 +493,7 @@ module.exports = function (app) {
                                                             <td align="center" valign="top">
                                                                 <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
                                                                     <tr>
-                                                                        <td style="padding: 35px 0 15px 0; font-size: 26px;" align="center">!Bienvenido `+ data.name + `!</td>
+                                                                        <td style="padding: 35px 0 15px 0; font-size: 26px;" align="center">¡Bienvenido/a `+ data.name + `!</td>
                                                                     </tr>
                                                                     
                                                                     
@@ -521,23 +525,34 @@ module.exports = function (app) {
                                                                     
                     
                                                                     <tr>
-                                                                        <td class="cta-block__content" style="padding: 20px 0 27px 0; font-size: 16px; line-height: 27px; color: #969696; text-align: center;">
+                                                                        <td class="cta-block__content" style="padding: 20px 0 0px 0; font-size: 16px; line-height: 27px; color: #969696; text-align: center;">
                                                                             
                     Utiliza el siguiente usuario y contraseña<br>
                     para ingresar a la plataforma:<br><br>
                                                                             
-                                                                            <div style="color:#286E9E">Usuario:</div> <div style="color:#459973"><strong>`+ data.email + `</strong></div><br>
+                                                                            <div style="color:#286E9E; font-size: 26px;">Usuario: </div> <div style="color:#459973"><strong>`+ data.email + `</strong></div><br>
                     
                     
-                                                                        <div style="color:#286E9E">Contasena: </div> <div style="color:#459973"><strong>`+ password + `</strong></div><br>	
+                                                                        <div style="color:#286E9E; font-size: 26px;">Contasena: </div> <div style="color:#459973"><strong>`+ password + `</strong></div><br>	
+                                                                        
+                                                                        </td>
+                                                                    </tr>
+                                                                    
+                                                                    
+                                                                    <tr>
+                                                                        <td class="cta-block__content" style="padding: 0px 0 27px 0; font-size: 16px; line-height: 27px; color: #969696; text-align: center;">
+                                                                            
+                    Click en el botón de abajo para ingresar:
+                                                                        
                                                                         
                                                                         </td>
                                                                     </tr>
                                                                   
+                                                                  
                                                                     <tr>
                                                                         <td class="cta-block__content" style="padding: 0px 0 50px 0; font-size: 22px; line-height: 17px; text-align: center;">
                                                                         
-                                                                        <span style="color: #2855E5; "><a href="#"><div class="boton-pro" style="padding: 3%; border-radius: 100px; color: #55A985; background-color: #fff; width: 46%; margin-left: 25%;">www.delinirsa.com</div></a> </span><br>
+                                                                        <span style="color: #000;"><a href="https://delinirsa.com" style="text-decoration: none;"><div class="boton-pro" style="padding: 3%; border-radius: 100px; color: #fff; background-color: #55A581;  width: 46%; margin-left: 25%; text-decoration: none;">Ingresar</div></a> </span><br>
                                                                         
                                                                         </td>
                                                                     </tr>
@@ -734,7 +749,7 @@ module.exports = function (app) {
     router.post('/sendqrcode', (req, res) => {
         let data = req.body
         var mailOptions = {
-            from: 'Deli Nirsa <delinirsa@outlook.com>',
+            from: 'Deli Nirsa <info@delinirsa.com>',
             to: data.email,
             subject: 'Tu codigo QR Deli Nirsa',
             html: `
@@ -817,7 +832,7 @@ module.exports = function (app) {
                                                     <td align="center" valign="top">
                                                         <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
                                                             <tr>
-                                                                <td style="padding: 35px 0 15px 0; font-size: 26px;" align="center">!Hola `+ data.name +`!</td>
+                                                                <td style="padding: 35px 0 15px 0; font-size: 26px;" align="center">!Hola `+ data.name + `!</td>
                                                                 
                                                             </tr>
                                                             
@@ -853,7 +868,7 @@ module.exports = function (app) {
                                                                 <td class="cta-block__content" style="padding: 20px 0 27px 0; font-size: 16px; line-height: 27px; color: #969696; text-align: center;">
                                                                     
             Aqui tienes tu codigo QR<br><br><br>
-            <img src='`+ data.qrcode +`' alt="qrcode" height="200px">      
+            <img src='`+ data.qrcode + `' alt="qrcode" height="200px">      
                                                                 </td>
                                                             </tr>
                                                             

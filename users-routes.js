@@ -69,6 +69,29 @@ module.exports = function (app) {
                 mealDate = new Date(meal.date._seconds * 1000);
                 startDate = new Date(period().start);
                 endDate = new Date(period().end);
+                if (mealDate >= startDate && mealDate <= endDate && meal.user === res.locals.uid) {
+                    filtered.push(meal);
+                }
+            })
+            res.send({
+                status: 'success',
+                data: filtered
+            })
+        } else {
+            res.send({
+                status: 'success',
+                data: []
+            })
+        }
+    })
+
+    router.post('/meals2', (req, res) => {
+        let filtered = [];
+        if (meals.length > 0) {
+            meals.forEach(meal => {
+                mealDate = new Date(meal.date._seconds * 1000);
+                startDate = new Date(period().start);
+                endDate = new Date(period().end);
                 endDate = endDate.getFullYear() + "-" + (endDate.getMonth() + 2) + "-" + 21 + " 00:00:00";
                 endDate = new Date(endDate);
                 if (mealDate >= startDate && mealDate <= endDate && meal.user === res.locals.uid) {
