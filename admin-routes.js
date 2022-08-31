@@ -183,7 +183,7 @@ module.exports = function (app) {
                     .setRecipients(recipients)
                     .setReplyTo("info@delinirsa.com")
                     .setReplyToName("Deli Nirsa")
-                    .setSubject("Nuevo "+ type +" Deli Nirsa")
+                    .setSubject("Nuevo " + type + " Deli Nirsa")
                     .setHtml(`
                     <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
                         <head>
@@ -761,195 +761,201 @@ module.exports = function (app) {
 
     router.post('/sendqrcode', (req, res) => {
         let data = req.body
-        var mailOptions = {
-            from: 'Deli Nirsa <info@delinirsa.com>',
-            to: data.email,
-            subject: 'Tu codigo QR Deli Nirsa',
-            html: `
-            <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
-                <head>
-                    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-                    <title>NIRSA</title>
-                    <style type="text/css">
-                        /* ----- Custom Font Import ----- */
-                        @import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin,latin-ext);
-            
-                        /* ----- Text Styles ----- */
-                        table{
-                            font-family: 'Lato', Arial, sans-serif;
-                            -webkit-font-smoothing: antialiased;
-                            -moz-font-smoothing: antialiased;
-                            font-smoothing: antialiased;
-                        }
-            
-                        
-                    </style>
-            
+        const recipients = [
+            new Recipient(data.email)
+        ];
+        const emailParams = new EmailParams()
+            .setFrom("info@delinirsa.com")
+            .setFromName("Deli Nirsa")
+            .setRecipients(recipients)
+            .setReplyTo("info@delinirsa.com")
+            .setReplyToName("Deli Nirsa")
+            .setSubject("Tu codigo QR Deli Nirsa")
+            .setHtml(
+                ` <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <title>NIRSA</title>
+            <style type="text/css">
+                /* ----- Custom Font Import ----- */
+                @import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin,latin-ext);
+    
+                /* ----- Text Styles ----- */
+                table{
+                    font-family: 'Lato', Arial, sans-serif;
+                    -webkit-font-smoothing: antialiased;
+                    -moz-font-smoothing: antialiased;
+                    font-smoothing: antialiased;
+                }
+    
                 
-                </head>
-            
-                <body style="padding: 0; margin: 0;" bgcolor="#eeeeee">
-                    <span style="color:transparent !important; overflow:hidden !important; display:none !important; line-height:0px !important; height:0 !important; opacity:0 !important; visibility:hidden !important; width:0 !important; mso-hide:all;"></span>
-            
-                    <!-- / Full width container -->
-                    <table class="full-width-container" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" bgcolor="#eeeeee" style="width: 100%; height: 100%; padding: 30px 0 30px 0;">
-                        <tr>
-                            <td align="center" valign="top">
-                                <!-- / 700px container -->
-                                <table class="container" border="0" cellpadding="0" cellspacing="0" width="700" bgcolor="#ffffff" style="width: 700px;">
-                                    <tr>
-                                        <td align="center" valign="top">
-                                            
-                                            
-                                            <!-- / Projects list -->
-                                            <table class="container projects-list" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding-top: 0px;">
-                                                <tr>
-                                                    <td>
-                                                        <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%">
-                                                            <tr>
-                                                                <td align="left">
-                                                                    <a href="#"><img src="https://nvkecgroup.com/PRUEBAS/nirsa/mails/img/header04.png" width="100%" height="auto" border="0" style="display: block;"></a>
-                                                                </td>
-            
-                                                                
-                                                            </tr>
-            
-                                                            
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            <!-- /// Projects list -->
-                                            
-            
-                                            
-                                            
-                                            <!-- / Divider -->
-                                            <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding-top: 25px;" align="center">
-                                                <tr>
-                                                    <td align="center">
-                                                        <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" align="center" style="border-bottom: solid 1px #eeeeee; width: 620px;">
-                                                            <tr>
-                                                                <td align="center">&nbsp;</td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            <!-- /// Divider -->
-            
-                                            <!-- / Title -->
-                                            <table class="container title-block" border="0" cellpadding="0" cellspacing="0" width="100%">
-                                                <tr>
-                                                    <td align="center" valign="top">
-                                                        <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
-                                                            <tr>
-                                                                <td style="padding: 35px 0 15px 0; font-size: 26px;" align="center">!Hola `+ data.name + `!</td>
-                                                                
-                                                            </tr>
-                                                            
-                                                            
-            
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            <!-- /// Title -->
-                                            
-                                        
-            
-                                            
-            
-                                            
-            
-                                        
-                                            
-            
-                                            <!-- / CTA Block -->
-                                            <table class="container cta-block" border="0" cellpadding="0" cellspacing="0" width="100%">
-                                                <tr>
-                                                    <td align="center" valign="top">
+            </style>
+    
+        
+        </head>
+    
+        <body style="padding: 0; margin: 0;" bgcolor="#eeeeee">
+            <span style="color:transparent !important; overflow:hidden !important; display:none !important; line-height:0px !important; height:0 !important; opacity:0 !important; visibility:hidden !important; width:0 !important; mso-hide:all;"></span>
+    
+            <!-- / Full width container -->
+            <table class="full-width-container" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" bgcolor="#eeeeee" style="width: 100%; height: 100%; padding: 30px 0 30px 0;">
+                <tr>
+                    <td align="center" valign="top">
+                        <!-- / 700px container -->
+                        <table class="container" border="0" cellpadding="0" cellspacing="0" width="700" bgcolor="#ffffff" style="width: 700px;">
+                            <tr>
+                                <td align="center" valign="top">
+                                    
+                                    
+                                    <!-- / Projects list -->
+                                    <table class="container projects-list" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding-top: 0px;">
+                                        <tr>
+                                            <td>
+                                                <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                    <tr>
+                                                        <td align="left">
+                                                            <a href="#"><img src="https://nvkecgroup.com/PRUEBAS/nirsa/mails/img/header04.png" width="100%" height="auto" border="0" style="display: block;"></a>
+                                                        </td>
+    
                                                         
+                                                    </tr>
+    
+                                                    
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- /// Projects list -->
+                                    
+    
+                                    
+                                    
+                                    <!-- / Divider -->
+                                    <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%" style="padding-top: 25px;" align="center">
+                                        <tr>
+                                            <td align="center">
+                                                <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" align="center" style="border-bottom: solid 1px #eeeeee; width: 620px;">
+                                                    <tr>
+                                                        <td align="center">&nbsp;</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- /// Divider -->
+    
+                                    <!-- / Title -->
+                                    <table class="container title-block" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                        <tr>
+                                            <td align="center" valign="top">
+                                                <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
+                                                    <tr>
+                                                        <td style="padding: 35px 0 15px 0; font-size: 26px;" align="center">!Hola `+ data.name + `!</td>
                                                         
+                                                    </tr>
+                                                    
+                                                    
+    
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- /// Title -->
+                                    
+                                
+    
+                                    
+    
+                                    
+    
+                                
+                                    
+    
+                                    <!-- / CTA Block -->
+                                    <table class="container cta-block" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                        <tr>
+                                            <td align="center" valign="top">
+                                                
+                                                
+                                                
+                                                <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
+                                                   
+                                                    
+    
+                                                    <tr>
+                                                        <td class="cta-block__content" style="padding: 20px 0 27px 0; font-size: 16px; line-height: 27px; color: #969696; text-align: center;">
+                                                            
+    Aqui tienes tu codigo QR<br><br><br>
+    <img src='`+ data.qrcode + `' alt="qrcode" height="200px">      
+                                                        </td>
+                                                    </tr>
+                                                    
+                                                  
+                                                    <tr>
+                                                        <td class="cta-block__content" style="padding: 0px 0 50px 0; font-size: 22px; line-height: 17px; text-align: center;">
                                                         
-                                                        <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
-                                                           
-                                                            
-            
-                                                            <tr>
-                                                                <td class="cta-block__content" style="padding: 20px 0 27px 0; font-size: 16px; line-height: 27px; color: #969696; text-align: center;">
-                                                                    
-            Aqui tienes tu codigo QR<br><br><br>
-            <img src='`+ data.qrcode + `' alt="qrcode" height="200px">      
-                                                                </td>
-                                                            </tr>
-                                                            
-                                                          
-                                                            <tr>
-                                                                <td class="cta-block__content" style="padding: 0px 0 50px 0; font-size: 22px; line-height: 17px; text-align: center;">
+                                                        <span style="color: #2855E5; "><a href="#" style="text-decoration: none;"><div class="boton-pro" style="padding: 3%; text-transform: none; text-decoration: none; border-radius: 100px; color: #55A985; background-color: #fff; width: 46%; margin-left: 25%;">www.delinirsa.com</div></a> </span><br>
+                                                        
+                                                        </td>
+                                                    </tr>
+                                                    
+                                                </table>
+                                                
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- /// CTA Block -->
+    
+                                    
+                                    
+                                
+                                    
+                                    
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                <!-- / Footer 
+                                    <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%" align="center" style="background-color: #001a33;">
+                                        <tr>
+                                            <td align="center">
+                                                <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" align="center" style="border-top: 1px solid #eeeeee; width: 620px;">
+                                                    <tr>
+                                                        <td style="text-align: center; padding: 50px 0 1px 0;">
+                                                            <a href="www.linkparaingresoalsistema.com" style="font-size: 18px; letter-spacing: 2px; text-decoration: none; color: #d5d5d5;">www.linkparaingresoalsistema.com<br><br><br></a>
+                                                        </td>
+                                                    </tr>
+    
+                                                    <tr>
+                                                        <td align="middle">
+                                                            <table width="60" height="2" border="0" cellpadding="0" cellspacing="0" style="width: 60px; height: 2px;">
                                                                 
-                                                                <span style="color: #2855E5; "><a href="#" style="text-decoration: none;"><div class="boton-pro" style="padding: 3%; text-transform: none; text-decoration: none; border-radius: 100px; color: #55A985; background-color: #fff; width: 46%; margin-left: 25%;">www.delinirsa.com</div></a> </span><br>
-                                                                
-                                                                </td>
-                                                            </tr>
-                                                            
-                                                        </table>
-                                                        
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            <!-- /// CTA Block -->
-            
-                                            
-                                            
-                                        
-                                            
-                                            
-                                            
-                                        
-                                            
-                                        
-                                            
-                                        
-                                        <!-- / Footer 
-                                            <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%" align="center" style="background-color: #001a33;">
-                                                <tr>
-                                                    <td align="center">
-                                                        <table class="container" border="0" cellpadding="0" cellspacing="0" width="620" align="center" style="border-top: 1px solid #eeeeee; width: 620px;">
-                                                            <tr>
-                                                                <td style="text-align: center; padding: 50px 0 1px 0;">
-                                                                    <a href="www.linkparaingresoalsistema.com" style="font-size: 18px; letter-spacing: 2px; text-decoration: none; color: #d5d5d5;">www.linkparaingresoalsistema.com<br><br><br></a>
-                                                                </td>
-                                                            </tr>
-            
-                                                            <tr>
-                                                                <td align="middle">
-                                                                    <table width="60" height="2" border="0" cellpadding="0" cellspacing="0" style="width: 60px; height: 2px;">
-                                                                        
-                                                                    </table>
-                                                                </td>
-                                                            </tr>
-            
-                                                            
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            
-                                            -->
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+    
+                                                    
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    
+                                    -->
 
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                </body>
-            </html>`
-            // html: `<img src='`+ data.qrcode +`' alt="" height="500px">`
-        };
-        SendEmail(mailOptions);
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </body>
+    </html>`)
+        mailersend.send(emailParams).then((response) => {
+            console.log('email status: ' + response.status, 'to: ', data.email);
+        });
         res.send({
             status: 'success'
         });
