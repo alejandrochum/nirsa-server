@@ -423,6 +423,8 @@ module.exports = function (app) {
         db.collection('colaboradores').doc(req.body.id).update({
             active: active,
             company: req.body.company,
+            name: req.body.name,
+            lastname: req.body.lastname
         }).then(() => {
             res.send('success');
         }).catch(error => {
