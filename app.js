@@ -402,6 +402,7 @@ app.post('/qrscanned', (req, res) => {
 
 require('./admin-routes.js')(app);
 require('./users-routes')(app);
+require('./daily-emails.js')(app);
 
 
 var getUsers = () => {

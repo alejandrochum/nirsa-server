@@ -4,7 +4,6 @@ const express = require('express');
 const { json } = require('body-parser');
 const router = express.Router();
 const db = getFirestore();
-var nodemailer = require('nodemailer');
 const Recipient = require("mailersend").Recipient;
 const EmailParams = require("mailersend").EmailParams;
 const MailerSend = require("mailersend");
@@ -16,14 +15,6 @@ const mailersend = new MailerSend({
 module.exports = function (app) {
 
     const listeners = require('./listeners.js');
-
-    var transporter = nodemailer.createTransport({
-        service: 'outlook',
-        auth: {
-            user: 'info@delinirsa.com',
-            pass: 'NivekDeli2022**'
-        }
-    });
 
     let admins = listeners.admins;
     let companies = listeners.companies;
@@ -64,7 +55,8 @@ module.exports = function (app) {
     // MEALS 
 
     router.post('/meals', (req, res) => {
-        res.send(meals.filter(meal => meal.date.toDate().toDateString() === new Date().toDateString()));
+        let response = meals.filter(meal => meal.date.toDate().toDateString() === new Date().toDateString());
+        res.send(response);
     })
 
     router.post('/periodmeals', (req, res) => {
@@ -815,7 +807,7 @@ module.exports = function (app) {
                                                 <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%">
                                                     <tr>
                                                         <td align="left">
-                                                            <a href="#"><img src="https://nvkecgroup.com/PRUEBAS/nirsa/mails/img/header04.png" width="100%" height="auto" border="0" style="display: block;"></a>
+                                                            <a href="#"><img src="https://admin.delinirsa.com/mails/img/header01.png" width="100%" height="auto" border="0" style="display: block;"></a>
                                                         </td>
     
                                                         
