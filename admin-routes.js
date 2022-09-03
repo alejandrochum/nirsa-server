@@ -56,6 +56,7 @@ module.exports = function (app) {
 
     router.post('/meals', (req, res) => {
         let response = meals.filter(meal => meal.date.toDate().toDateString() === new Date().toDateString());
+        console.log(response)
         res.send(response);
     })
 
