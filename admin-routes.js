@@ -55,7 +55,7 @@ module.exports = function (app) {
     // MEALS 
 
     router.post('/meals', (req, res) => {
-        console.log(new Date().toLocaleDateString({timeZone: 'America/Ecuador'}));
+        console.log(new Date().toLocaleDateString({timeZone: 'ECT'}));
         // let response = meals.filter(meal => meal.date.toDate().toDateString() === new Date().toDateString());
         // console.log(meals[1].date.toDate().toDateString(), new Date().toDateString())
         // console.log(response)
