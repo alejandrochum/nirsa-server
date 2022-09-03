@@ -55,11 +55,10 @@ module.exports = function (app) {
     // MEALS 
 
     router.post('/meals', (req, res) => {
-        console.log(new Date().toLocaleDateString({timeZone: 'ECT'}));
-        // let response = meals.filter(meal => meal.date.toDate().toDateString() === new Date().toDateString());
-        // console.log(meals[1].date.toDate().toDateString(), new Date().toDateString())
-        // console.log(response)
-        // res.send(response);
+        let today = new Date().toLocaleDateString('es-EC', {timeZone: 'America/Guayaquil'});
+        let response = meals.filter(meal => meal.date.toDate().toLocaleDateString('es-EC', {timeZone: 'America/Guayaquil'}) === today);
+       
+        res.send(response);
     })
 
     router.post('/periodmeals', (req, res) => {

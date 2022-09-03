@@ -30,13 +30,13 @@ let period = () => {
     return period;
 }
 
-// listenForCompanies();
+listenForCompanies();
 listenForAdmins();
-// listenForUsers();
-// listenForPrices();
-// listenForMeals();
-// listenForRequests();
-// listenForHolidays();
+listenForUsers();
+listenForPrices();
+listenForMeals();
+listenForRequests();
+listenForHolidays();
 
 function listenForHolidays() {
     const query = db.collection('holidays');
