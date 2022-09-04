@@ -20,7 +20,8 @@ module.exports = function (app) {
     }
 
     app.get('/emails', (req, res) => {
-        let todayMeals = meals.filter(meal => meal.date.toDate().toDateString() === new Date().toDateString() && !meal.cancelled);
+        let today = new Date().toLocaleDateString('es-EC', {timeZone: 'America/Guayaquil'});
+        let todayMeals = meals.filter(meal => meal.date.toDate().toLocaleDateString('es-EC', {timeZone: 'America/Guayaquil'}) === today);
 
         let dietMeals = todayMeals.filter(meal => meal.type == 'Dieta');
         let regularMeals = todayMeals.filter(meal => meal.type == 'Regular');

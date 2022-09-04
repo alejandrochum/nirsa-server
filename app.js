@@ -403,6 +403,7 @@ app.post('/qrscanned', (req, res) => {
 require('./admin-routes.js')(app);
 require('./users-routes')(app);
 require('./daily-emails.js')(app);
+require('./password-reset.js')(app);
 
 
 var getUsers = () => {
