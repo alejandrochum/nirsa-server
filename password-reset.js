@@ -17,8 +17,8 @@ module.exports = function (app) {
     let admins = listeners.admins;
     let meals = listeners.meals;
 
-    app.get('/pass-reset', (req, res) => {
-        const userEmail = 'alejo@admin.com';
+    app.post('/pass-reset', (req, res) => {
+        const userEmail = req.body.email;
         var url = ''
         var name = ''
 
