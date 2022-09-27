@@ -25,8 +25,8 @@ module.exports = function (app) {
             period.start = today.getFullYear() + "-" + (today.getMonth()) + "-" + 21 + " 00:00:00";
             period.end = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + 20 + " 00:00:00";
         } else {
-            period.start = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + 20 + " 00:00:00";
-            period.end = today.getFullYear() + "-" + (today.getMonth() + 2) + "-" + 21 + " 00:00:00";
+            period.start = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + 21 + " 00:00:00";
+            period.end = today.getFullYear() + "-" + (today.getMonth() + 2) + "-" + 20 + " 00:00:00";
         }
         return period;
     }

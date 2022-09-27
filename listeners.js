@@ -3,6 +3,8 @@ const { getAuth, idToken } = require('firebase-admin/auth');
 const { getFirestore, Timestamp, FieldValue, collection, onSnapshot } = require('firebase-admin/firestore');
 var serviceAccount = require("./serviceAccountKey.json");
 
+var CronJob = require('cron').CronJob;
+
 const db = getFirestore();
 
 var meals = [];
@@ -21,15 +23,16 @@ let period = () => {
     };
 
     if (today.getDate() <= 20) {
-        period.start = today.getFullYear() + "-" + (today.getMonth()) + "-" + 21 + " 00:00:00";
-        period.end = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + 20 + " 00:00:00";
+        period.start = today.getFullYear() + "-" + (today.getMonth()) + "-" + 20 + " 00:00:00";
+        period.end = today.getFullYear() + "-" + (today.getMonth() + 2) + "-" + 20 + " 00:00:00";
     } else {
         period.start = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + 20 + " 00:00:00";
-        period.end = today.getFullYear() + "-" + (today.getMonth() + 2) + "-" + 21 + " 00:00:00";
+        period.end = today.getFullYear() + "-" + (today.getMonth() + 3) + "-" + 20 + " 00:00:00";
     }
     return period;
 }
 
+console.log(period())
 listenForCompanies();
 listenForAdmins();
 listenForUsers();
@@ -141,6 +144,7 @@ function listenForMeals() {
                 console.log(change.doc.data())
             }
         })
+        console.log(meals.length);
     })
 }
 
