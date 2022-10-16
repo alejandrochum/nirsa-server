@@ -21,9 +21,14 @@ app.use(cors({
     origin: '*',
 }));
 
+app.use(express.static('public'));
+app.use('/images', express.static('images'));
+
+
 const listeners = require('./listeners.js');
 const { response } = require('express');
 let meals = listeners.meals;
+let requests = listeners.requests;
 
 async function sleep(millis) {
     return new Promise(resolve => setTimeout(resolve, millis));
@@ -331,6 +336,14 @@ app.post('/todaymeals', (req, res) => {
     res.send(meals.filter(meal => meal.date.toDate().toDateString() === new Date().toDateString()));
 });
 
+app.post('/requests', (req, res) => {
+    console.log(requests);
+    res.send({
+        status: 'success',
+        data: requests
+    })
+});
+
 app.post('/verifyEmail', (req, res) => {
     getAuth()
         .verifyIdToken(req.body.token)
@@ -404,6 +417,7 @@ require('./admin-routes.js')(app);
 require('./users-routes')(app);
 require('./daily-emails.js')(app);
 require('./password-reset.js')(app);
+require('./upload-image.js')(app);
 
 
 var getUsers = () => {
