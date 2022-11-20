@@ -723,9 +723,18 @@ module.exports = function (app) {
 
     router.post('/addHoliday', (req, res) => {
         let holiday = req.body.holiday;
+        let bHoliday = new Date(holiday).setHours(23, 59,59,999);
+        let aHoliday = new Date(holiday).setHours(0, 0, 0, 0);
+        console.log(holiday);
         db.collection('holidays').doc(holiday).set({
             date: holiday,
         }).then(docRef => {
+            db.collection('meals').where('date', '>=', new Date(aHoliday)).where('date', '<=', new Date(bHoliday)).get().then((docs) => {
+                console.log(docs.size);
+                docs.forEach((doc) => {
+                    db.collection('meals').doc(doc.id).delete();
+                })
+            })
             res.send({
                 status: 'success',
                 data: holiday

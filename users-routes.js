@@ -13,6 +13,7 @@ module.exports = function (app) {
     let prices = listeners.prices;
     let meals = listeners.meals;
     let requests = listeners.requests;
+    let holidays = listeners.holidays;
 
     let period = () => {
         var today = new Date();
@@ -145,6 +146,13 @@ module.exports = function (app) {
             status: 'success',
             data: data
         })
+    })
+
+    router.post('/holidays', (req, res) => {
+        res.send({
+            status: 'success',
+            data: holidays
+        });
     })
 
 }

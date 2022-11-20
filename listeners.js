@@ -37,7 +37,7 @@ listenForCompanies();
 listenForAdmins();
 listenForUsers();
 listenForPrices();
-listenForMeals();
+// listenForMeals();
 listenForRequests();
 listenForHolidays();
 
@@ -127,7 +127,6 @@ function listenForUsers() {
 function listenForMeals() {
     // .where('date', '>=', new Date(period().start)).where('date', '<=', new Date(period().end));
     const query = db.collection('meals').orderBy('date');
-
     const observer = query.onSnapshot(querySnapshot => {
         querySnapshot.docChanges().forEach(change => {
             if (change.type === 'added') {
