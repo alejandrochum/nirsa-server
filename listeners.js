@@ -37,7 +37,7 @@ listenForCompanies();
 listenForAdmins();
 listenForUsers();
 listenForPrices();
-// listenForMeals();
+listenForMeals();
 listenForRequests();
 listenForHolidays();
 
