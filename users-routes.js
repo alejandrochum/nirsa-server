@@ -70,6 +70,7 @@ module.exports = function (app) {
                 mealDate = new Date(meal.date._seconds * 1000);
                 startDate = new Date(period().start);
                 endDate = new Date(period().end);
+                console.log(endDate);
                 if (mealDate >= startDate && mealDate <= endDate && meal.user === res.locals.uid) {
                     filtered.push(meal);
                 }
@@ -93,7 +94,10 @@ module.exports = function (app) {
                 mealDate = new Date(meal.date._seconds * 1000);
                 startDate = new Date(period().start);
                 endDate = new Date(period().end);
-                endDate = endDate.getFullYear() + "-" + (endDate.getMonth() + 2) + "-" + 21 + " 00:00:00";
+                let month = endDate.getMonth() + 2;
+                month = month > 12 ? 12 : month;
+                endDate = endDate.getFullYear() + "-" + month + "-" + 20 + " 00:00:00";
+
                 endDate = new Date(endDate);
                 if (mealDate >= startDate && mealDate <= endDate && meal.user === res.locals.uid) {
                     filtered.push(meal);
