@@ -96,7 +96,7 @@ module.exports = function (app) {
                 endDate = new Date(period().end);
                 let month = endDate.getMonth() + 2;
                 month = month > 12 ? 12 : month;
-                endDate = endDate.getFullYear() + "-" + month + "-" + 20 + " 00:00:00";
+                endDate = endDate.getFullYear() + "-" + month + "-" + 21 + " 00:00:00";
 
                 endDate = new Date(endDate);
                 if (mealDate >= startDate && mealDate <= endDate && meal.user === res.locals.uid) {
