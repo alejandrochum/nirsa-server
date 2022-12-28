@@ -22,14 +22,17 @@ module.exports = function (app) {
             end: ''
         };
 
-        if (today.getDate() <= 20) {
-            period.start = today.getFullYear() + "-" + (today.getMonth()) + "-" + 21 + " 00:00:00";
-            period.end = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + 20 + " 00:00:00";
-        } else {
-            period.start = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + 21 + " 00:00:00";
-            period.end = today.getFullYear() + "-" + (today.getMonth() + 2) + "-" + 20 + " 00:00:00";
+    if (today.getDate() <= 20) {
+        period.start = today.getFullYear() + "-" + (today.getMonth()) + "-" + 21 + " 00:00:00";
+        period.end = today.getFullYear() + "-" + (today.getMonth() + 2) + "-" + 20 + " 00:00:00";
+    } else {
+        period.start = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + 21 + " 00:00:00";
+        period.end = today.getFullYear() + "-" + (today.getMonth() + 3) + "-" + 20 + " 00:00:00";
+        if(today.getMonth() + 3 > 12) {
+            period.end = today.getFullYear() + 1 + "-01-20 00:00:00";  
         }
-        return period;
+    }
+    return period;
     }
 
     // Validate User
